@@ -36,7 +36,7 @@ CORS(app_socketio)
 # Add socket.io config for better connection stability
 socketio = SocketIO(
     app_socketio, 
-    cors_allowed_origins=['http://127.0.0.1:8000', 'http://localhost:8000', 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://*', 'http://*'],
+    cors_allowed_origins=['http://127.0.0.1:8000', 'http://localhost:8000', 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://34.126.116.68/', 'https://*', 'http://*'],
     binary=True,  # Important for binary audio data
     ping_timeout=60,  # Increase ping timeout to 60 seconds (default is 5)
     ping_interval=25,  # Increase ping interval to 25 seconds (default is 25)
