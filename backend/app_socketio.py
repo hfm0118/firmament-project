@@ -29,20 +29,28 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 app_socketio = Flask("app_socketio")
-# Enable CORS for all routes
-CORS(app_socketio, origins=['http://34.126.116.68/'])
+# Enable CORS for all routes and origins
+CORS(app_socketio, origins="*", supports_credentials=True)
 
-# Allow CORS from the main app and any production URLs
-# Add socket.io config for better connection stability
+# Socket.io config with consistent CORS settings
 socketio = SocketIO(
     app_socketio, 
-    cors_allowed_origins=['http://127.0.0.1:8000', 'http://localhost:8000', 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://34.126.116.68/', 'https://*', 'http://*'],
+    cors_allowed_origins="*",  # Allow all origins for consistency
     binary=True,  # Important for binary audio data
     ping_timeout=60,  # Increase ping timeout to 60 seconds (default is 5)
     ping_interval=25,  # Increase ping interval to 25 seconds (default is 25)
     max_http_buffer_size=5*1024*1024,  # 5MB buffer for binary data
     async_mode='threading'  # Use threading mode for better stability
 )
+
+# Add CORS headers to all responses
+@app_socketio.after_request
+def add_cors_headers(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
 
 API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
