@@ -30,7 +30,7 @@ load_dotenv()
 
 app_socketio = Flask("app_socketio")
 # Enable CORS for all routes
-CORS(app_socketio)
+CORS(app_socketio, origins=['http://34.126.116.68/'])
 
 # Allow CORS from the main app and any production URLs
 # Add socket.io config for better connection stability
