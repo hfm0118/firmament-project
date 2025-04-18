@@ -30,7 +30,7 @@ load_dotenv()
 
 app_socketio = Flask("app_socketio")
 # Enable CORS for all routes and origins
-CORS(app_socketio, origins="*", supports_credentials=True)
+CORS(app_socketio, origins="*")
 
 # Socket.io config with consistent CORS settings
 socketio = SocketIO(
@@ -49,7 +49,6 @@ def add_cors_headers(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
 API_KEY = os.getenv("DEEPGRAM_API_KEY")
