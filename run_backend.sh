@@ -7,12 +7,12 @@ mkdir -p logs
 
 # Start Flask app as a nohup process
 cd backend
-nohup python app.py > ../logs/flask_app.log 2>&1 &
+nohup python3 app.py > ../logs/flask_app.log 2>&1 &
 FLASK_PID=$!
 echo "Flask backend started with PID: $FLASK_PID"
 
 # Start Socket.IO server as a nohup process
-nohup python app_socketio.py > ../logs/socketio_app.log 2>&1 &
+nohup python3 app_socketio.py > ../logs/socketio_app.log 2>&1 &
 SOCKETIO_PID=$!
 echo "Socket.IO server started with PID: $SOCKETIO_PID"
 
