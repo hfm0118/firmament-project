@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import './TranscriptionMic.css';
+import API_ENDPOINTS from '../config/api-config';
 
 // Helper function to generate ephemeral session ID
 const generateEphemeralId = (baseUserId) => {
@@ -134,8 +135,7 @@ const TranscriptionMic = ({
         socketRef.current = null;
       }
 
-      const socketPort = 5001;
-      const socketUrl = `http://localhost:${socketPort}`;
+      const socketUrl = API_ENDPOINTS.socketConnection;
       
       debugLog(`Initializing socket connection to ${socketUrl} with userId ${ephemeralUserId}`);
       
@@ -724,4 +724,4 @@ const TranscriptionMic = ({
   );
 };
 
-export default TranscriptionMic; 
+export default TranscriptionMic;

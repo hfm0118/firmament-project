@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import NotebookList from './components/NotebookList';
 import NotebookDetail from './components/NotebookDetail';
+import API_ENDPOINTS from './config/api-config';
 
 // Animation variants
 const containerVariants = {
@@ -79,7 +80,7 @@ function App() {
   const fetchUserNotebooks = async (userId) => {
     try {
       // Fetch from notebooks collection
-      const response = await fetch(`http://localhost:8000/notebooks/${userId}`);
+      const response = await fetch(API_ENDPOINTS.notebooksByUser(userId));
       
       if (!response.ok) {
         // Handle HTTP errors
@@ -199,7 +200,7 @@ function App() {
       };
       
       // Save to MongoDB using the notebooks endpoint
-      const response = await fetch('http://localhost:8000/notebooks', {
+      const response = await fetch(API_ENDPOINTS.notebooks, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -256,7 +257,7 @@ function App() {
     
     try {
       // Send delete request to the server
-      const response = await fetch(`http://localhost:8000/notebooks/${notebookId}`, {
+      const response = await fetch(API_ENDPOINTS.deleteNotebook(notebookId), {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

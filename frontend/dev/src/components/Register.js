@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './Login.css'; // Reuse the login styles
+import API_ENDPOINTS from '../config/api-config';
 
 const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
   const [firstName, setFirstName] = useState('');
@@ -29,7 +30,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/register', {
+      const response = await fetch(API_ENDPOINTS.register, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

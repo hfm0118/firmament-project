@@ -10,7 +10,7 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 # Set the number of workers
 FLASK_WORKERS=3
-SOCKETIO_WORKERS=3
+SOCKETIO_WORKERS=1
 
 # Set application module paths
 FLASK_APP="app:app"
