@@ -2,8 +2,8 @@
 
 // Base URLs for different services
 // 34.87.18.15
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://34.87.18.15:8000';
-const SOCKET_BASE_URL = process.env.REACT_APP_SOCKET_BASE_URL || 'http://34.87.18.15:5001';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://34.87.18.15:8000';
+const SOCKET_BASE_URL = process.env.REACT_APP_SOCKET_BASE_URL || 'https://34.87.18.15:5001';
 
 // API endpoints
 const API_ENDPOINTS = {

@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import time
+import argparse
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
@@ -451,23 +452,44 @@ def run_cleanup_task():
         cleanup_inactive_connections()
 
 if __name__ == '__main__':
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Run SocketIO server with optional SSL')
+    parser.add_argument('--ssl', action='store_true', help='Enable SSL/TLS')
+    args = parser.parse_args()
+    
     try:
         logging.info("Starting SocketIO server.")
         # Get port from environment variable (for cloud deployment) or use default
         port = int(os.environ.get("PORT", 5001))
+        
+        ssl_args = {}
+        if args.ssl:
+            cert_path = os.path.join('certs', 'cert.pem')
+            key_path = os.path.join('certs', 'key.pem')
+            
+            if os.path.exists(cert_path) and os.path.exists(key_path):
+                ssl_args = {
+                    'certfile': cert_path,
+                    'keyfile': key_path,
+                }
+                logger.info(f"Using SSL certificates: {cert_path}, {key_path}")
+            else:
+                logger.warning("SSL certificates not found. Running without SSL.")
+        
         # Run socketio app - bind to 0.0.0.0 for cloud deployment
         socketio.run(
             app_socketio, 
             host='0.0.0.0', 
             debug=False, 
             allow_unsafe_werkzeug=True, 
-            port=port
+            port=port,
+            **ssl_args
         )
     except Exception as e:
         logging.error(f"Error starting SocketIO server: {e}")
         # Attempt to restart the server
         try:
             logging.info("Attempting to restart SocketIO server...")
-            socketio.run(app_socketio, host='0.0.0.0', debug=False, allow_unsafe_werkzeug=True, port=5001)
+            socketio.run(app_socketio, host='0.0.0.0', debug=False, allow_unsafe_werkzeug=True, port=5001, **ssl_args)
         except Exception as restart_error:
             logging.error(f"Failed to restart SocketIO server: {restart_error}")

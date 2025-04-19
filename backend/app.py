@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 import datetime
+import argparse
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
@@ -277,10 +278,25 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    # This code only runs when you execute this file directly
-    # It doesn't run when imported by Gunicorn
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Run Flask server with optional SSL')
+    parser.add_argument('--ssl', action='store_true', help='Enable SSL/TLS')
+    args = parser.parse_args()
+    
     logger.info("Starting Flask server.")
     # Get port from environment variable (for cloud deployment) or use default
     port = int(os.environ.get("PORT", 8000))
+    
+    ssl_context = None
+    if args.ssl:
+        cert_path = os.path.join('certs', 'cert.pem')
+        key_path = os.path.join('certs', 'key.pem')
+        
+        if os.path.exists(cert_path) and os.path.exists(key_path):
+            ssl_context = (cert_path, key_path)
+            logger.info(f"Using SSL certificates: {cert_path}, {key_path}")
+        else:
+            logger.warning("SSL certificates not found. Running without SSL.")
+    
     # Run flask app - bind to 0.0.0.0 for cloud deployment
-    app.run(host='0.0.0.0', debug=False, port=port)
+    app.run(host='0.0.0.0', debug=False, port=port, ssl_context=ssl_context)
